@@ -7,7 +7,6 @@ use bot::GlobalBot;
 use clap::Parser;
 use tokio::{io, runtime::Builder};
 
-use dotenv::dotenv;
 use teloxide::Bot;
 
 use cfg::ConfigState;
@@ -37,7 +36,7 @@ fn main() {
 
     let runtime = Builder::new_multi_thread()
         .worker_threads(4)
-        .thread_stack_size(3 * 1024 * 1024) // 3MB стек
+        .thread_stack_size(3 * 1024 * 1024)
         .enable_all()
         .build()
         .unwrap();
@@ -49,14 +48,9 @@ async fn async_main(args: Args) {
     tokio::spawn(async {
         let states = load_states(String::from(args.states)).await.unwrap();
 
-        println!("{:?}", states);
-
-        dotenv().ok();
-
         let bot = Bot::new(args.token);
 
-        let global = GlobalBot::new(bot, states);
-        let global = Arc::new(global);
+        let global = Arc::new(GlobalBot::new(bot, states));
 
         global.run().await;
     })

@@ -1,0 +1,32 @@
+[
+    {
+        "name": "default",
+        "text": "123",
+        "btns": [
+            {
+                "text": "btn1",
+                "on_click": {
+                    "set_text": "1234"
+                }
+            },
+            {
+                "text": "btn2",
+                "on_click": {
+                    "switch_state": "second"
+                }
+            }
+        ]
+    },
+    {
+        "name": "second",
+        "text": "12",
+        "btns": [
+            {
+                "text": "hello",
+                "on_click": {
+                    "set_text": "123"
+                }
+            }
+        ]
+    }
+]
