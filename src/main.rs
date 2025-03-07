@@ -4,13 +4,25 @@ mod cfg;
 use std::sync::Arc;
 
 use bot::GlobalBot;
-use tokio::io;
+use clap::Parser;
+use tokio::{io, runtime::Builder};
 
 use dotenv::dotenv;
 use teloxide::Bot;
-use tokio::main;
 
 use cfg::ConfigState;
+
+/// Database builder telegram bot
+#[derive(Parser)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Config file with states
+    #[arg(short, long)]
+    states: String,
+    /// Telegram bot API Key
+    #[arg(short, long)]
+    token: String,
+}
 
 async fn load_states(path: String) -> io::Result<Vec<ConfigState>> {
     let json = tokio::fs::read(path).await?;
@@ -20,22 +32,34 @@ async fn load_states(path: String) -> io::Result<Vec<ConfigState>> {
     Ok(result)
 }
 
-#[main]
-async fn main() {
-    let states = load_states(String::from(
-        "/home/okinai/code/chembot/target/debug/test.json",
-    ))
+fn main() {
+    let args = Args::parse();
+
+    let runtime = Builder::new_multi_thread()
+        .worker_threads(4)
+        .thread_stack_size(3 * 1024 * 1024) // 3MB стек
+        .enable_all()
+        .build()
+        .unwrap();
+
+    runtime.block_on(async_main(args));
+}
+
+async fn async_main(args: Args) {
+    tokio::spawn(async {
+        let states = load_states(String::from(args.states)).await.unwrap();
+
+        println!("{:?}", states);
+
+        dotenv().ok();
+
+        let bot = Bot::new(args.token);
+
+        let global = GlobalBot::new(bot, states);
+        let global = Arc::new(global);
+
+        global.run().await;
+    })
     .await
     .unwrap();
-
-    println!("{:?}", states);
-
-    dotenv().ok();
-
-    let bot = Bot::from_env();
-
-    let global = GlobalBot::new(bot, states);
-    let global = Arc::new(global);
-
-    global.run().await;
 }
