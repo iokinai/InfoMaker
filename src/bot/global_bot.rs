@@ -3,19 +3,14 @@ use std::{collections::HashMap, sync::Arc};
 use tokio::sync::RwLock;
 
 use teloxide::{
-    dispatching::{
-        UpdateHandler,
-        dialogue::{self, GetChatId, InMemStorage},
-    },
     prelude::*,
     types::{InlineKeyboardButton, InlineKeyboardButtonKind, InlineKeyboardMarkup},
-    utils::command::BotCommands,
 };
 use trl::{getters, trl};
 
 use crate::cfg::{Btn, ConfigState, OnClickAction};
 
-use super::{BotState, database_state::DatabaseState, get_handler};
+use super::{database_state::DatabaseState, get_handler};
 
 #[derive(trl)]
 #[getters]
@@ -76,7 +71,7 @@ impl GlobalBot {
 
     pub async fn run(self: Arc<Self>) {
         Dispatcher::builder(self.bot.clone(), get_handler())
-            .dependencies(dptree::deps![self.clone(), InMemStorage::<BotState>::new()])
+            .dependencies(dptree::deps![self.clone()])
             .enable_ctrlc_handler()
             .build()
             .dispatch()

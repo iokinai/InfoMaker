@@ -8,7 +8,7 @@ use tokio::io;
 
 use dotenv::dotenv;
 use teloxide::Bot;
-use tokio::{io::AsyncReadExt, main};
+use tokio::main;
 
 use cfg::ConfigState;
 
@@ -23,7 +23,7 @@ async fn load_states(path: String) -> io::Result<Vec<ConfigState>> {
 #[main]
 async fn main() {
     let states = load_states(String::from(
-        "F:\\code\\rust\\chembot\\target\\debug\\test.json",
+        "/home/okinai/code/chembot/target/debug/test.json",
     ))
     .await
     .unwrap();
