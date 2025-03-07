@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use log::info;
 use teloxide::{
     Bot,
     dispatching::{UpdateFilterExt, UpdateHandler},
@@ -22,6 +23,15 @@ pub fn get_handler() -> UpdateHandler<Box<dyn std::error::Error + Send + Sync + 
 }
 
 async fn display_start(gb: Arc<GlobalBot>, bot: Bot, msg: Message) -> HandlerResult {
+    let sender = msg.from.clone().unwrap();
+
+    info!(
+        "Received message from {} (id: {}) with text: {}",
+        sender.full_name(),
+        sender.id,
+        msg.text().unwrap()
+    );
+
     let current = gb
         .states()
         .get(&*gb.current_state().read().await.clone())
@@ -36,6 +46,13 @@ async fn display_start(gb: Arc<GlobalBot>, bot: Bot, msg: Message) -> HandlerRes
 
 async fn cb_ep(gb: Arc<GlobalBot>, q: CallbackQuery) -> HandlerResult {
     if let Some(data) = q.data {
+        let sender = q.from.clone();
+        info!(
+            "Received data callback from {} (id: {})",
+            sender.full_name(),
+            sender.id,
+        );
+
         if let Some(act) = gb.btn_acts().get(&data) {
             match act {
                 OnClickAction::SetText(text) => {

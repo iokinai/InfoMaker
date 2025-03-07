@@ -5,6 +5,7 @@ use std::sync::Arc;
 
 use bot::GlobalBot;
 use clap::Parser;
+use log::{error, info};
 use tokio::{io, runtime::Builder};
 
 use teloxide::Bot;
@@ -33,6 +34,9 @@ async fn load_states(path: String) -> io::Result<Vec<ConfigState>> {
 
 fn main() {
     let args = Args::parse();
+    pretty_env_logger::init();
+
+    info!("App loading");
 
     let runtime = Builder::new_multi_thread()
         .worker_threads(4)
@@ -46,12 +50,27 @@ fn main() {
 
 async fn async_main(args: Args) {
     tokio::spawn(async {
-        let states = load_states(String::from(args.states)).await.unwrap();
+        info!("Loading states");
+
+        let states = match load_states(String::from(args.states)).await {
+            Ok(st) => st,
+            Err(e) => {
+                error!("Error while loading states: {:?}", e);
+                panic!("{:?}", e);
+            }
+        };
+
+        info!("Initializing bot");
 
         let bot = Bot::new(args.token);
 
+        info!("Bot initialized successfully");
+
+        info!("Parsing states");
+
         let global = Arc::new(GlobalBot::new(bot, states));
 
+        info!("Starting bot");
         global.run().await;
     })
     .await

@@ -1,11 +1,14 @@
 [package]
-name = "chembot"
+name = "infomaker"
 version = "0.1.0"
+authors = ["iokinai <okinaijap@gmail.com>"]
+description = "A simple builder for Telegram Bots"
 edition = "2024"
 
 [dependencies]
 clap = {version = "4.5.31", features = ["derive"]}
 log = "0.4.26"
+pretty_env_logger = "0.5.0"
 serde = {version = "1.0.218"}
 serde_json = "1.0.140"
 teloxide = {version = "0.13.0", features = ["full"]}

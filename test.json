@@ -1,30 +1,30 @@
 [
     {
         "name": "default",
-        "text": "123",
+        "text": "Hi! It's an example",
         "btns": [
             {
-                "text": "btn1",
+                "text": "Hi! Great!",
                 "on_click": {
-                    "set_text": "1234"
+                    "set_text": "Good to hear you like this"
                 }
             },
             {
-                "text": "btn2",
+                "text": "Hmm, tell me more..",
                 "on_click": {
-                    "switch_state": "second"
+                    "switch_state": "more"
                 }
             }
         ]
     },
     {
-        "name": "second",
-        "text": "12",
+        "name": "more",
+        "text": "You can read README!",
         "btns": [
             {
-                "text": "hello",
+                "text": "Ok!",
                 "on_click": {
-                    "set_text": "123"
+                    "switch_state": "default"
                 }
             }
         ]
