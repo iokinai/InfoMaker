@@ -1,0 +1,13 @@
+[package]
+name = "chembot"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dotenv = "0.15.0"
+log = "0.4.26"
+serde = {version = "1.0.218", features = []}
+serde_json = "1.0.140"
+teloxide = {version = "0.13.0", features = ["full"]}
+tokio = {version = "1.43.0", features = ["full"]}
+trl = {path = "deps/trl"}
