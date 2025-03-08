@@ -1,6 +1,6 @@
 [package]
 name = "infomaker"
-version = "0.1.0"
+version = "1.1.0"
 authors = ["iokinai <okinaijap@gmail.com>"]
 description = "A simple builder for Telegram Bots"
 edition = "2024"
