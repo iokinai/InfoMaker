@@ -14,6 +14,36 @@
                 "on_click": {
                     "switch_state": "more"
                 }
+            },
+            {
+                "text": "Hi! Great!",
+                "on_click": {
+                    "set_text": "Good to hear you like this"
+                }
+            },
+            {
+                "text": "Hi! Great!",
+                "on_click": {
+                    "set_text": "Good to hear you like this"
+                }
+            },
+            {
+                "text": "Hi! Great!",
+                "on_click": {
+                    "set_text": "Good to hear you like this"
+                }
+            },
+            {
+                "text": "Hi! Great!",
+                "on_click": {
+                    "set_text": "Good to hear you like this"
+                }
+            },
+            {
+                "text": "Hi! Great!",
+                "on_click": {
+                    "set_text": "Good to hear you like this"
+                }
             }
         ]
     },
