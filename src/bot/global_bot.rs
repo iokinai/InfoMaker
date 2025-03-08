@@ -29,18 +29,24 @@ impl GlobalBot {
     ) -> InlineKeyboardMarkup {
         let mut buttons = Vec::new();
 
-        for (j, btn) in btns.iter().enumerate() {
-            let btn_data = format!("{}btn{}", i, j);
+        for (d, chunk) in btns.chunks(5).enumerate() {
+            let mut row = Vec::new();
 
-            buttons.push(InlineKeyboardButton::new(
-                btn.text().clone(),
-                InlineKeyboardButtonKind::CallbackData(btn_data.clone()),
-            ));
+            for (j, btn) in chunk.iter().enumerate() {
+                let btn_data = format!("{}btn{}{}", i, d, j);
 
-            btn_acts.insert(btn_data.clone(), btn.on_click().clone());
+                row.push(InlineKeyboardButton::new(
+                    btn.text().clone(),
+                    InlineKeyboardButtonKind::CallbackData(btn_data.clone()),
+                ));
+
+                btn_acts.insert(btn_data.clone(), btn.on_click().clone());
+            }
+
+            buttons.push(row);
         }
 
-        InlineKeyboardMarkup::new(vec![buttons])
+        InlineKeyboardMarkup::new(buttons)
     }
 
     pub fn new(bot: Bot, states: Vec<ConfigState>) -> GlobalBot {
